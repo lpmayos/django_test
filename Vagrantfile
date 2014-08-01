@@ -41,10 +41,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     s.path = "provisioning/root_script.sh"
   end
 
-  # config.vm.provision "shell" do |s|
-  #   s.privileged = false
-  #   s.path = "provisioning/vagrant_script.sh"
-  # end
+  config.vm.provision "shell" do |s|
+    s.privileged = false
+    s.path = "provisioning/vagrant_script.sh"
+  end
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
