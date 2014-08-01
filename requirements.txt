@@ -1,0 +1,8 @@
+Django==1.6.5
+argparse==1.2.1
+distribute==0.6.24
+lucene-querybuilder==0.2
+neomodel==0.3.6
+py2neo==1.5
+pytz==2013b
+wsgiref==0.1.2
