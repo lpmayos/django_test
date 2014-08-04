@@ -23,6 +23,7 @@ class Location(models.Model):
     world = models.ForeignKey(World)
     name = models.CharField(max_length=200)
     coordinates = models.CharField(max_length=200)
+    likes = models.IntegerField(default=0)
 
     def __unicode__(self):
             return self.name
