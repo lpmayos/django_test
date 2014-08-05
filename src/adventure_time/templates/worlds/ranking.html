@@ -1,0 +1,9 @@
+<h1>{{ world.name }}</h1>
+
+<ul>
+    {% for location in world.location_set.all %}
+        <li>{{ location.name }} -- {{ location.likes }} vote{{ location.likes|pluralize }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'adventure_time:detail' world.id %}">Vote again?</a>

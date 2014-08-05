@@ -1,6 +1,12 @@
 <h1>{{ world.name }}</h1>
-<ul>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'adventure_time:like' world.id %}" method="post">
+    {% csrf_token %}
     {% for location in world.location_set.all %}
-        <li>{{ location.name }}</li>
+        <input type="radio" name="location" id="location{{ forloop.counter }}" value="{{ location.id }}" />
+        <label for="location{{ forloop.counter }}">{{ location.name }}</label><br />
     {% endfor %}
-</ul>
+    <input type="submit" value="Like" />
+</form>

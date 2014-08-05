@@ -1,22 +1,41 @@
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from adventure_time.models import World
+from django.core.urlresolvers import reverse
+from django.views import generic
+from adventure_time.models import World, Location
 
 
-def index(request):
-    latest_world_list = World.objects.all().order_by('name')[:5]
-    context = {'latest_world_list': latest_world_list}
-    return render(request, 'worlds/index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'worlds/index.html'
+    context_object_name = 'latest_world_list'
+
+    def get_queryset(self):
+        """ Return the last five published polls.
+        """
+        return World.objects.order_by('name')[:5]
 
 
-def detail(request, world_id):
-    world = get_object_or_404(World, pk=world_id)
-    return render(request, 'worlds/detail.html', {'world': world})
+class DetailView(generic.DetailView):
+    model = World
+    template_name = 'worlds/detail.html'
 
 
-def ranking(request, world_id):
-    return HttpResponse("You're looking at the location likes ranking of world %s." % world_id)
+class RankingView(generic.DetailView):
+    model = World
+    template_name = 'worlds/ranking.html'
 
 
 def like(request, world_id):
-    return HttpResponse("You're liking locations on world %s." % world_id)
+    world = get_object_or_404(World, pk=world_id)
+    try:
+        selected_location = world.location_set.get(pk=request.POST['location'])
+    except (KeyError, Location.DoesNotExist):
+        # Redisplay the world voting form.
+        return render(request, 'worlds/detail.html', {
+            'world': world,
+            'error_message': "You didn't select a location.",
+        })
+    else:
+        selected_location.likes += 1
+        selected_location.save()
+        return HttpResponseRedirect(reverse('adventure_time:ranking', args=(world.id,)))

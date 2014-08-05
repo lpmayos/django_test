@@ -3,12 +3,8 @@ from adventure_time import views
 
 
 urlpatterns = patterns('',
-                       # ex: /worlds/
-                       url(r'^$', views.index, name='index'),
-                       # ex: /worlds/5/
-                       url(r'^(?P<world_id>\d+)/$', views.detail, name='detail'),
-                       # ex: /worlds/5/ranking/
-                       url(r'^(?P<world_id>\d+)/ranking/$', views.ranking, name='ranking'),
-                       # ex: /worlds/5/like/
+                       url(r'^$', views.IndexView.as_view(), name='index'),
+                       url(r'^(?P<pk>\d+)/$', views.DetailView.as_view(), name='detail'),
+                       url(r'^(?P<pk>\d+)/ranking/$', views.RankingView.as_view(), name='ranking'),
                        url(r'^(?P<world_id>\d+)/like/$', views.like, name='like'),
                        )
