@@ -1,0 +1,9 @@
+{% if latest_world_list %}
+    <ul>
+        {% for world in latest_world_list %}
+        <li><a href="{% url 'adventure_time:detail' world.id %}">{{ world.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No worlds are available.</p>
+{% endif %}
