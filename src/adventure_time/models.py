@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+import datetime
 
 
 class World(models.Model):
@@ -14,9 +16,17 @@ class World(models.Model):
                                   choices=world_types,
                                   default='kingdom')
     surface = models.IntegerField()
+    creation_date = models.DateTimeField('creation date')
 
     def __unicode__(self):
             return self.name
+
+    def was_created_recently(self):
+            return self.creation_date >= timezone.now() - datetime.timedelta(days=1)
+
+    was_created_recently.admin_order_field = 'creation_date'
+    was_created_recently.boolean = True
+    was_created_recently.short_description = 'Created recently?'
 
 
 class Location(models.Model):
