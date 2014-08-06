@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.views import generic
 from adventure_time.models import World, Location
+from django.utils import timezone
 
 
 class IndexView(generic.ListView):
@@ -10,14 +11,19 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_world_list'
 
     def get_queryset(self):
-        """ Return the last five published polls.
+        """ Return the last five created worlds (not including those set to be created in the future).
         """
-        return World.objects.order_by('name')[:5]
+        return World.objects.filter(creation_date__lte=timezone.now()).order_by('name')[:5]
 
 
 class DetailView(generic.DetailView):
     model = World
     template_name = 'worlds/detail.html'
+
+    def get_queryset(self):
+            """ Excludes any worlds that aren't created yet.
+            """
+            return World.objects.filter(creation_date__lte=timezone.now())
 
 
 class RankingView(generic.DetailView):

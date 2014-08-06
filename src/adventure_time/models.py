@@ -11,18 +11,20 @@ class World(models.Model):
         ('kingdom', 'Kingdom'),
         ('world', 'World'),
         ('demon_world', 'Demon World'),
+        ('imagination_realm', 'Imagination realm'),
     )
     world_type = models.CharField(max_length=200,
                                   choices=world_types,
                                   default='kingdom')
-    surface = models.IntegerField()
+    surface = models.IntegerField(null=True)
     creation_date = models.DateTimeField('creation date')
 
     def __unicode__(self):
             return self.name
 
     def was_created_recently(self):
-            return self.creation_date >= timezone.now() - datetime.timedelta(days=1)
+            now = timezone.now()
+            return now - datetime.timedelta(days=1) <= self.creation_date <= now
 
     was_created_recently.admin_order_field = 'creation_date'
     was_created_recently.boolean = True

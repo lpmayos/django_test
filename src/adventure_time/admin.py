@@ -14,7 +14,7 @@ class WorldAdmin(admin.ModelAdmin):
         ('Other information', {'fields': ['surface'], 'classes': ['collapse']}),
     ]
     inlines = [LocationInline]
-    list_display = ('name', 'world_type', 'surface', 'was_created_recently')
+    list_display = ('name', 'world_type', 'surface', 'was_created_recently', 'creation_date')
     list_filter = ['world_type']
     search_fields = ['name']
 
