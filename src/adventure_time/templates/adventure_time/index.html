@@ -1,3 +1,7 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'adventure_time/style.css' %}" />
+
 {% if latest_world_list %}
     <ul>
         {% for world in latest_world_list %}

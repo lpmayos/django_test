@@ -7,7 +7,7 @@ from django.utils import timezone
 
 
 class IndexView(generic.ListView):
-    template_name = 'worlds/index.html'
+    template_name = 'adventure_time/index.html'
     context_object_name = 'latest_world_list'
 
     def get_queryset(self):
@@ -18,7 +18,7 @@ class IndexView(generic.ListView):
 
 class DetailView(generic.DetailView):
     model = World
-    template_name = 'worlds/detail.html'
+    template_name = 'adventure_time/detail.html'
 
     def get_queryset(self):
             """ Excludes any worlds that aren't created yet.
@@ -28,7 +28,7 @@ class DetailView(generic.DetailView):
 
 class RankingView(generic.DetailView):
     model = World
-    template_name = 'worlds/ranking.html'
+    template_name = 'adventure_time/ranking.html'
 
 
 def like(request, world_id):
@@ -37,7 +37,7 @@ def like(request, world_id):
         selected_location = world.location_set.get(pk=request.POST['location'])
     except (KeyError, Location.DoesNotExist):
         # Redisplay the world voting form.
-        return render(request, 'worlds/detail.html', {
+        return render(request, 'adventure_time/detail.html', {
             'world': world,
             'error_message': "You didn't select a location.",
         })
