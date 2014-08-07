@@ -17,8 +17,8 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'coordinates', 'likes', 'world')
 
 
-class UserSerializer(serializers.ModelSerializer):
-    worlds = serializers.PrimaryKeyRelatedField(many=True)
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    worlds = serializers.HyperlinkedRelatedField(many=True, view_name='world-detail')
 
     class Meta:
         model = User

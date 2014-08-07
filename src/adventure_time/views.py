@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
-from rest_framework import generics
 from rest_framework import permissions
+from rest_framework import viewsets
 from adventure_time.serializers import WorldSerializer, UserSerializer
 from adventure_time.models import World, Location
 from adventure_time.permissions import IsOwnerOrReadOnly
@@ -54,40 +54,23 @@ def like(request, world_id):
 
 # Django REST framework views
 
-class WorldList(generics.ListCreateAPIView):
-    """ List all worlds, or create a new world.
+class WorldViewSet(viewsets.ModelViewSet):
     """
-
-    queryset = World.objects.all()
-    serializer_class = WorldSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    def pre_save(self, obj):
-        obj.owner = self.request.user
-
-
-class WorldDetail(generics.RetrieveUpdateDestroyAPIView):
-    """ Retrieve, update or delete a world instance.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
     """
-
     queryset = World.objects.all()
     serializer_class = WorldSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly)
+                          IsOwnerOrReadOnly,)
 
     def pre_save(self, obj):
         obj.owner = self.request.user
 
 
-class UserList(generics.ListAPIView):
-    """ List all users
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    """ Retieve a user instance
+    This viewset automatically provides `list` and `detail` actions.
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
