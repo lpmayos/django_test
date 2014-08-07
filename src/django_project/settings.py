@@ -91,9 +91,11 @@ REST_FRAMEWORK = {
     # Only used if the `serializer_class` attribute is not set on a view.
     'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.HyperlinkedModelSerializer',
 
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+
+    # todo lpmayos: I remove temporarily the permission classes so I can explore my views as I follow the tutorial (docs: http://www.pressinganswer.com/439460/attributeerror-user_list-object-has-no-attribute-_ignore_model_permissions)
+    # # Use Django's standard `django.contrib.auth` permissions,
+    # # or allow read-only access for unauthenticated users.
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ]
 }

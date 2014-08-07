@@ -4,10 +4,9 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from adventure_time.models import World, Location
 from django.utils import timezone
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from adventure_time.serializers import WorldSerializer
 
 
@@ -54,55 +53,43 @@ def like(request, world_id):
 
 # Django REST framework views
 
-class JSONResponse(HttpResponse):
-    """ An HttpResponse that renders its content into JSON.
-    """
-
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
-
-
-@csrf_exempt
-def world_list(request):
+@api_view(['GET', 'POST'])
+def world_list(request, format=None):
     """ List all worlds, or create a new world.
     """
     if request.method == 'GET':
         worlds = World.objects.all()
         serializer = WorldSerializer(worlds, many=True)
-        return JSONResponse(serializer.data)
+        return Response(serializer.data)
 
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = WorldSerializer(data=data)
+        serializer = WorldSerializer(data=request.DATA)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data, status=201)
-        return JSONResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
-def world_detail(request, pk):
-    """ Retrieve, update or delete a world.
+@api_view(['GET', 'PUT', 'DELETE'])
+def world_detail(request, pk, format=None):
+    """ Retrieve, update or delete a world instance.
     """
     try:
         world = World.objects.get(pk=pk)
     except World.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = WorldSerializer(world)
-        return JSONResponse(serializer.data)
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = WorldSerializer(world, data=data)
+        serializer = WorldSerializer(world, data=request.DATA)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data)
-        return JSONResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         world.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
