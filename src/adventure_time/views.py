@@ -3,9 +3,12 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth.models import User
 from rest_framework import generics
-from adventure_time.serializers import WorldSerializer
+from rest_framework import permissions
+from adventure_time.serializers import WorldSerializer, UserSerializer
 from adventure_time.models import World, Location
+from adventure_time.permissions import IsOwnerOrReadOnly
 
 
 class IndexView(generic.ListView):
@@ -57,6 +60,10 @@ class WorldList(generics.ListCreateAPIView):
 
     queryset = World.objects.all()
     serializer_class = WorldSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def pre_save(self, obj):
+        obj.owner = self.request.user
 
 
 class WorldDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -65,3 +72,22 @@ class WorldDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = World.objects.all()
     serializer_class = WorldSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly)
+
+    def pre_save(self, obj):
+        obj.owner = self.request.user
+
+
+class UserList(generics.ListAPIView):
+    """ List all users
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    """ Retieve a user instance
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

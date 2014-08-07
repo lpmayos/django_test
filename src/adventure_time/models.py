@@ -18,6 +18,10 @@ class World(models.Model):
                                   default='kingdom')
     surface = models.IntegerField(null=True)
     creation_date = models.DateTimeField('creation date')
+    owner = models.ForeignKey('auth.User',
+                              related_name='worlds',
+                              null=True,
+                              blank=True)
 
     def __unicode__(self):
             return self.name
