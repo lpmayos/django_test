@@ -2,12 +2,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.views import generic
-from adventure_time.models import World, Location
 from django.utils import timezone
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework import generics
 from adventure_time.serializers import WorldSerializer
+from adventure_time.models import World, Location
 
 
 class IndexView(generic.ListView):
@@ -53,43 +51,17 @@ def like(request, world_id):
 
 # Django REST framework views
 
-@api_view(['GET', 'POST'])
-def world_list(request, format=None):
+class WorldList(generics.ListCreateAPIView):
     """ List all worlds, or create a new world.
     """
-    if request.method == 'GET':
-        worlds = World.objects.all()
-        serializer = WorldSerializer(worlds, many=True)
-        return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = WorldSerializer(data=request.DATA)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = World.objects.all()
+    serializer_class = WorldSerializer
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def world_detail(request, pk, format=None):
+class WorldDetail(generics.RetrieveUpdateDestroyAPIView):
     """ Retrieve, update or delete a world instance.
     """
-    try:
-        world = World.objects.get(pk=pk)
-    except World.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = WorldSerializer(world)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = WorldSerializer(world, data=request.DATA)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        world.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    queryset = World.objects.all()
+    serializer_class = WorldSerializer

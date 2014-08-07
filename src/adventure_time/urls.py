@@ -12,9 +12,9 @@ urlpatterns = patterns('',
 
 # django rest framewrok url
 
-urlpatterns += patterns('adventure_time.views',
-                        url(r'^$', 'world_list'),
-                        url(r'^(?P<pk>[0-9]+)/$', 'world_detail'),
+urlpatterns += patterns('',
+                        url(r'^worlds/$', views.WorldList.as_view(), name='worlds'),
+                        url(r'^worlds/(?P<pk>[0-9]+)/$', views.WorldDetail.as_view()),
                         )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
