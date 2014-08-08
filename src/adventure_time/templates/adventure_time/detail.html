@@ -2,11 +2,13 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
+<h3>Which location do you like more?</h3>
+
 <form action="{% url 'adventure_time:like' world.id %}" method="post">
     {% csrf_token %}
-    {% for location in world.location_set.all %}
+    {% for location in world.locations.all %}
         <input type="radio" name="location" id="location{{ forloop.counter }}" value="{{ location.id }}" />
         <label for="location{{ forloop.counter }}">{{ location.name }}</label><br />
     {% endfor %}
-    <input type="submit" value="Like" />
+    <br/><input type="submit" value="Like" />
 </form>
