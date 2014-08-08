@@ -18,7 +18,7 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ('id', 'name', 'coordinates', 'likes', 'world')
+        fields = ('id', 'name', 'coordinates', 'likes', 'world', 'owner')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

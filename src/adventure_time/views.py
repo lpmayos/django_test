@@ -78,6 +78,9 @@ class LocationViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
 
+    def pre_save(self, obj):
+        obj.owner = self.request.user
+
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
