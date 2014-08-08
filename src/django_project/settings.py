@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'adventure_time',
     'south',
     'rest_framework',
+    'rest_framework_swagger',
 )
 
 MIDDLEWARE_CLASSES = (
