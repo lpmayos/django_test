@@ -16,9 +16,9 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_world_list'
 
     def get_queryset(self):
-        """ Return the last five created worlds (not including those set to be created in the future).
+        """ Return the list of worlds (not including those set to be created in the future).
         """
-        return World.objects.filter(creation_date__lte=timezone.now()).order_by('name')[:5]
+        return World.objects.filter(creation_date__lte=timezone.now()).order_by('name')
 
 
 class DetailView(generic.DetailView):
@@ -39,7 +39,7 @@ class RankingView(generic.DetailView):
 def like(request, world_id):
     world = get_object_or_404(World, pk=world_id)
     try:
-        selected_location = world.location_set.get(pk=request.POST['location'])
+        selected_location = world.locations.get(pk=request.POST['location'])
     except (KeyError, Location.DoesNotExist):
         # Redisplay the world voting form.
         return render(request, 'adventure_time/detail.html', {

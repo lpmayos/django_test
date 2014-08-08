@@ -1,7 +1,7 @@
-<h1>{{ world.name }}</h1>
+<h1>{{ world.name }} - Ranking</h1>
 
 <ul>
-    {% for location in world.location_set.all %}
+    {% for location in world.locations.all %}
         <li>{{ location.name }} -- {{ location.likes }} vote{{ location.likes|pluralize }}</li>
     {% endfor %}
 </ul>
