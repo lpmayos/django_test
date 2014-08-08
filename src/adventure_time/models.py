@@ -41,6 +41,10 @@ class Location(models.Model):
     name = models.CharField(max_length=200)
     coordinates = models.CharField(max_length=200)
     likes = models.IntegerField(default=0)
+    owner = models.ForeignKey('auth.User',
+                              related_name='locations',
+                              null=True,
+                              blank=True)
 
     def __unicode__(self):
             return self.name

@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 
 
 class WorldSerializer(serializers.ModelSerializer):
+    locations = serializers.HyperlinkedRelatedField(many=True, view_name='location-detail')
+
     class Meta:
         model = World
         fields = ('id', 'name', 'world_type', 'surface', 'creation_date', 'owner', 'locations')
@@ -12,6 +14,8 @@ class WorldSerializer(serializers.ModelSerializer):
 
 
 class LocationSerializer(serializers.ModelSerializer):
+    world = serializers.HyperlinkedRelatedField(many=False, view_name='world-detail')
+
     class Meta:
         model = Location
         fields = ('id', 'name', 'coordinates', 'likes', 'world')

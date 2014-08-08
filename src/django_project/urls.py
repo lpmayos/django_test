@@ -9,6 +9,7 @@ admin.autodiscover()
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'worlds', views.WorldViewSet)
+router.register(r'locations', views.LocationViewSet)
 router.register(r'users', views.UserViewSet)
 
 urlpatterns = patterns('',

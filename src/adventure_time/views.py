@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework import viewsets
-from adventure_time.serializers import WorldSerializer, UserSerializer
+from adventure_time.serializers import WorldSerializer, LocationSerializer, UserSerializer
 from adventure_time.models import World, Location
 from adventure_time.permissions import IsOwnerOrReadOnly
 
@@ -66,6 +66,17 @@ class WorldViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.owner = self.request.user
+
+
+class LocationViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
