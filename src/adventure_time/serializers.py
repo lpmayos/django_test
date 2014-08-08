@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class WorldSerializer(serializers.ModelSerializer):
     class Meta:
         model = World
-        fields = ('id', 'name', 'world_type', 'surface', 'creation_date', 'owner')
+        fields = ('id', 'name', 'world_type', 'surface', 'creation_date', 'owner', 'locations')
 
     owner = serializers.Field(source='owner.username')
 

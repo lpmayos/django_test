@@ -36,7 +36,8 @@ class World(models.Model):
 
 
 class Location(models.Model):
-    world = models.ForeignKey(World)
+    world = models.ForeignKey(World,
+                              related_name='locations')
     name = models.CharField(max_length=200)
     coordinates = models.CharField(max_length=200)
     likes = models.IntegerField(default=0)
