@@ -1,7 +1,11 @@
 django_test
 ===========
 
-Small project to play a little bit with **Django**, and how it works with **neo4j** using **neomodel**.
+Small project to play a little bit with **Django** and **Django Rest Framework**.
+
+It implements some demo models, and offers interaction with them through a **restful API** (http://localhost:8000/).
+
+You'll find API documentation on http://localhost:8000/docs thanks to **rest_framework_swagger**
 
 
 How to use it
@@ -18,4 +22,4 @@ How to use it
     (4dlife-env)vagrant@precise64:/vagrant$ cd src/
     (4dlife-env)vagrant@precise64:/vagrant/src$ python manage.py runserver 0.0.0.0:8000
     
-    Go to you browser and open localhost:8000
+    Go to you browser and open http://localhost:8000 or http://localhost:8000/docs
